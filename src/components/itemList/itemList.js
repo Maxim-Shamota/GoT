@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import './itemList.css';
+import styled from 'styled-components';
+
 export default class ItemList extends Component {
 
     render() {

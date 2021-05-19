@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './randomChar.css';
+import styled from 'styled-components';
 
 export default class RandomChar extends Component {
 

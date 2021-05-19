@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import './charDetails.css';
+import styled from 'styled-components';
+
 export default class CharDetails extends Component {
 
     render() {

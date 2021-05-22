@@ -27,6 +27,8 @@ export default class RandomChar extends Component {
     constructor() {
         super();
         this.updateChar();
+        this.timerID = setInterval(this.updateChar, 1500);
+        clearInterval(this.timerID);
     }
 
     gotService = new gotService();
@@ -51,8 +53,8 @@ export default class RandomChar extends Component {
         })
     }
 
-    updateChar() {
-        const id = Math.floor(Math.random() * 3040 + 25);
+    updateChar = () => {
+        const id = Math.floor(Math.random() * 2940 + 25);
         this.gotService.getCharacter(id)
             .then(this.onCharLoaded)
             .catch(this.onError);

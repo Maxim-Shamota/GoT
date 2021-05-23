@@ -28,12 +28,13 @@ export default class RandomChar extends Component {
 
     state = {
         char: {},
-        loading: true
+        loading: true,
+        error: false
     }
 
     componentDidMount() {
         this.updateChar();
-        this.timerID = setInterval(this.updateChar, 5000);
+        this.timerID = setInterval(this.updateChar, 7000);
     }
 
     componentWillUnmount() {
@@ -43,8 +44,7 @@ export default class RandomChar extends Component {
     onCharLoaded = (char) => {
         this.setState({
             char,
-            loading: false,
-            error: false
+            loading: false
         });
     }
 
@@ -57,7 +57,8 @@ export default class RandomChar extends Component {
 
     updateChar = () => {
         const id = Math.floor(Math.random() * 2140 + 25);
-        this.gotService.getCharacter(id)
+        this.gotService
+            .getCharacter(id)
             .then(this.onCharLoaded)
             .catch(this.onError);
     }
@@ -67,13 +68,13 @@ export default class RandomChar extends Component {
 
         const errorMessage = error ? <ErrorMessage /> : null;
         const spinner = loading ? <Spinner /> : null;
-        const content = !(loading || error) ? <View char={char}/> : null ;
+        const content = !(loading || error) ? <View char={char} /> : null;
 
         return (
             <RandomBlock>
                 {errorMessage}
                 {spinner}
-                {content}                
+                {content}
             </RandomBlock>
         );
     }

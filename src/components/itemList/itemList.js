@@ -1,7 +1,15 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ErrorMessage from '../errorMessage';
 import Spinner from '../spinner';
+import PropTypes from 'prop-types';
+
+const ItemListLi = styled.li`
+    /* overflow-x: hidden; */
+    /* background: url('fon.jpg'); */
+    /* background-size: cover; */
+    /* background-color: red; */
+`
 
 const ItemListBlock = styled.ul`
     border-radius: 5px;
@@ -10,74 +18,44 @@ const ItemListBlock = styled.ul`
     }
 `
 
-export default class ItemList extends Component {
+function ItemList({ getData, onItemSelected, renderItem }) {
 
-    state = {
-        itemList: null,
-        error: false
-    }
+    const [itemList, updateList] = useState([]);
 
-    componentDidMount() {
-        const {getData} = this.props;
-
+    useEffect(() => {
         getData()
-            .then((itemList) => {
-                this.setState({
-                    itemList,
-                    error: false
-                })
+            .then((data) => {
+                updateList(data);
             })
-            .catch(() => { this.onError() });
-    }
+    }, [])
 
-    componentDidCatch(){
-        this.setState({
-            itemList: null,
-            error: true
-        })
-    }
-
-    onError(status){
-        this.setState({
-            itemList: null,
-            error: true
-        })
-    }
-
-    renderItems(arr) {
+    function renderItems(arr) {
         return arr.map((item) => {
-            const {id, name} = item;
-            const label = this.props.renderItem(item);
+            const { id } = item;
+            const label = renderItem(item);
             return (
-                <li
+                <ItemListLi
                     key={id}
                     className="list-group-item"
-                    onClick={() => this.props.onItemSelected(id)}
+                    onClick={() => onItemSelected(id)}
                 >
                     {label}
-                </li>
+                </ItemListLi>
             )
         })
     }
 
-    render() {
-
-        const { itemList, error } = this.state;
-        
-        if (error) {
-            return <ErrorMessage />
-        }
-
-        if (!itemList) {
-            return <Spinner />;
-        }
-
-        const items = this.renderItems(itemList);
-
-        return (
-            <ItemListBlock>
-                {items}
-            </ItemListBlock>
-        );
+    if (!itemList) {
+        return <Spinner />;
     }
+
+    const items = renderItems(itemList);
+
+    return (
+        <ItemListBlock>
+            {items}
+        </ItemListBlock>
+    );
 }
+
+export default ItemList;

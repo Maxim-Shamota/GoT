@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import gotService from '../../services/gotService';
 import Spinner from '../spinner';
-import ErrorMessage from '../errorMessage'
+import ErrorMessage from '../errorMessage';
+import PropTypes from 'prop-types';
 
 const RandomBlock = styled.div`
     border-radius: 5px;
@@ -32,9 +33,13 @@ export default class RandomChar extends Component {
         error: false
     }
 
+    static defaultProps = {
+        interval: 10000
+    }
+
     componentDidMount() {
         this.updateChar();
-        this.timerID = setInterval(this.updateChar, 7000);
+        this.timerID = setInterval(this.updateChar, this.props.interval);
     }
 
     componentWillUnmount() {
